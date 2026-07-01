@@ -10,6 +10,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SOSAlertController;
 use App\Http\Controllers\VoiceMessageController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 
 // ─── Public Auth ──────────────────────────────────────────────────────────────
 Route::post('/register', [AuthController::class, 'register']);
@@ -22,6 +23,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Dashboard summary
     Route::get('/dashboard', [DashboardController::class, 'index']);
+
+    // User search & connections
+    Route::get('/users/search', [UserController::class, 'searchElderly']);
+    Route::post('/my-profile', [UserController::class, 'saveMyProfile'])->middleware('role:elderly');
+    Route::post('/connect-elderly', [UserController::class, 'connectToElderly'])->middleware('role:caregiver,family');
 
     // Elderly (caregiver only)
     Route::middleware('role:caregiver')->group(function () {

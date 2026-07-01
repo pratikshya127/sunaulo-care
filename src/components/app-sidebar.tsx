@@ -10,6 +10,7 @@ import {
   Settings,
   Heart,
   LogOut,
+  Users,
 } from "lucide-react";
 import {
   Sidebar,
@@ -31,48 +32,56 @@ import { useAuth, type Role } from "@/lib/auth";
 const ALL_ITEMS = [
   {
     key: "sidebar.dashboard",
+    label: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
     roles: ["elderly", "caregiver", "family"] as Role[],
   },
   {
     key: "sidebar.records",
+    label: "Health Records",
     url: "/dashboard/records",
     icon: HeartPulse,
     roles: ["caregiver", "family"] as Role[],
   },
   {
     key: "sidebar.medicine",
+    label: "Medicine",
     url: "/dashboard/medicine",
     icon: Pill,
     roles: ["elderly", "caregiver", "family"] as Role[],
   },
   {
     key: "sidebar.voice",
+    label: "Voice Messages",
     url: "/dashboard/voice",
     icon: Mic,
     roles: ["elderly", "caregiver", "family"] as Role[],
   },
   {
     key: "sidebar.reports",
+    label: "Reports",
     url: "/dashboard/reports",
     icon: FileBarChart,
     roles: ["caregiver", "family"] as Role[],
   },
   {
     key: "sidebar.notifications",
+    label: "Notifications",
     url: "/dashboard/notifications",
     icon: Bell,
     roles: ["elderly", "caregiver", "family"] as Role[],
   },
   {
     key: "sidebar.sos",
+    label: "SOS Emergency",
     url: "/dashboard/sos",
     icon: ShieldAlert,
     roles: ["elderly", "caregiver", "family"] as Role[],
   },
   {
     key: "sidebar.settings",
+    label: "Settings",
     url: "/dashboard/settings",
     icon: Settings,
     roles: ["elderly", "caregiver", "family"] as Role[],
@@ -83,6 +92,12 @@ const ROLE_LABELS: Record<Role, string> = {
   elderly: "Elderly",
   caregiver: "Caregiver",
   family: "Family Member",
+};
+
+const ROLE_BADGES: Record<Role, { color: string; emoji: string }> = {
+  elderly:   { color: "bg-primary/10 text-primary",   emoji: "👵" },
+  caregiver: { color: "bg-success/10 text-success",   emoji: "👩‍⚕️" },
+  family:    { color: "bg-blue-500/10 text-blue-600", emoji: "👨‍👩‍👧" },
 };
 
 export function AppSidebar() {
@@ -98,6 +113,7 @@ export function AppSidebar() {
 
   const role = user?.role ?? "elderly";
   const items = ALL_ITEMS.filter((i) => i.roles.includes(role));
+  const badge = ROLE_BADGES[role];
 
   const initials = user?.name
     ? user.name
@@ -131,21 +147,21 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => {
                 const active = isActive(item.url);
-                const label = t(item.key);
+                const label = item.label;
                 return (
                   <SidebarMenuItem key={item.key}>
                     <SidebarMenuButton
                       asChild
                       isActive={active}
                       tooltip={label}
-                      className={
+                      className={`transition-all duration-200 ${
                         active
                           ? "bg-primary/10 text-primary font-semibold hover:bg-primary/15"
-                          : ""
-                      }
+                          : "hover:bg-secondary/80"
+                      }`}
                     >
                       <Link to={item.url} className="flex items-center gap-3">
-                        <item.icon className="h-4 w-4 shrink-0" />
+                        <item.icon className={`h-4 w-4 shrink-0 ${active ? "text-primary" : ""}`} />
                         {!collapsed && <span>{label}</span>}
                       </Link>
                     </SidebarMenuButton>
@@ -160,14 +176,16 @@ export function AppSidebar() {
       <SidebarFooter>
         {user && !collapsed && (
           <div className="mx-2 mb-2 flex items-center gap-3 rounded-xl bg-secondary/60 px-3 py-2.5">
-            <Avatar className="h-8 w-8 shrink-0">
+            <Avatar className="h-8 w-8 shrink-0 ring-2 ring-primary/20">
               <AvatarFallback className="bg-primary text-primary-foreground text-xs font-bold">
                 {initials}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold truncate">{user.name}</p>
-              <p className="text-xs text-muted-foreground">{ROLE_LABELS[role]}</p>
+              <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${badge.color}`}>
+                {badge.emoji} {ROLE_LABELS[role]}
+              </span>
             </div>
           </div>
         )}

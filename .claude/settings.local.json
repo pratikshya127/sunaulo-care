@@ -4,7 +4,15 @@
       "PowerShell(bun --version 2>&1)",
       "PowerShell(node --version 2>&1)",
       "PowerShell(npm --version 2>&1)",
-      "PowerShell(irm bun.sh/install.ps1 | iex)"
+      "PowerShell(irm bun.sh/install.ps1 | iex)",
+      "Bash(php --version)",
+      "Bash(composer --version)",
+      "Bash(php -m)",
+      "Bash(php artisan *)",
+      "Bash(mysql -u root -e \"CREATE DATABASE IF NOT EXISTS sunaulo_care CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\")",
+      "Bash(test -f \"C:/xampp/mysql/bin/mysql.exe\" && echo \"XAMPP MySQL found\" || echo \"Not found\" && ls \"C:/xampp/mysql/bin/\" | grep mysql)",
+      "Read(//c/xampp/mysql/bin/**)",
+      "Bash(\"C:/xampp/mysql/bin/mysql.exe\" -u root -e \"CREATE DATABASE IF NOT EXISTS sunaulo_care CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; SHOW DATABASES;\")"
     ]
   }
 }

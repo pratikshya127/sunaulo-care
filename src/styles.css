@@ -153,6 +153,14 @@
   * {
     border-color: var(--color-border);
   }
+
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+    animation: shimmer-slide 1.6s infinite;
+  }
   html {
     scroll-behavior: smooth;
   }
@@ -195,4 +203,108 @@
 }
 @utility shadow-glow {
   box-shadow: var(--shadow-glow);
+}
+
+/* ── Custom Animations ─────────────────────────────────────────────────────── */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+@keyframes blob-morph {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  33%       { border-radius: 30% 70% 70% 30% / 30% 40% 60% 70%; }
+  66%       { border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%; }
+}
+@keyframes gradient-flow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes shimmer-slide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@keyframes pulse-ring {
+  0%   { transform: scale(1);    opacity: 1; }
+  100% { transform: scale(1.6);  opacity: 0; }
+}
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes card-reveal {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes slide-right {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@utility animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+@utility animate-blob {
+  animation: blob-morph 10s ease-in-out infinite;
+}
+@utility animate-gradient-flow {
+  background-size: 200% 200%;
+  animation: gradient-flow 6s ease infinite;
+}
+@utility animate-pulse-ring {
+  animation: pulse-ring 1.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+@utility animate-card-reveal {
+  animation: card-reveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@utility animate-slide-right {
+  animation: slide-right 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@utility animate-count-up {
+  animation: count-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Stagger helpers — apply via inline style={{ animationDelay: Xms }} */
+@utility stagger-1 { animation-delay: 60ms; }
+@utility stagger-2 { animation-delay: 120ms; }
+@utility stagger-3 { animation-delay: 180ms; }
+@utility stagger-4 { animation-delay: 240ms; }
+@utility stagger-5 { animation-delay: 300ms; }
+@utility stagger-6 { animation-delay: 360ms; }
+@utility stagger-7 { animation-delay: 420ms; }
+@utility stagger-8 { animation-delay: 480ms; }
+
+/* Shimmer skeleton */
+@utility shimmer {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-secondary);
+}
+
+/* Gradient text */
+@utility text-gradient-animated {
+  background: linear-gradient(120deg, var(--color-primary), var(--color-teal), var(--color-primary));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-flow 4s linear infinite;
+}
+
+/* Role theme chips */
+@utility role-elderly {
+  background: linear-gradient(135deg, #FFF6D8 0%, #F3E6B3 100%);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+@utility role-caregiver {
+  background: linear-gradient(135deg, #E8F5F0 0%, #C8E6D6 100%);
+  border-color: #5B8F6A;
+  color: #5B8F6A;
+}
+@utility role-family {
+  background: linear-gradient(135deg, #EBF3FB 0%, #C8DCF0 100%);
+  border-color: #4F8CC9;
+  color: #4F8CC9;
 }

@@ -1,0 +1,51 @@
+services:
+  - type: web
+    name: sunaulo-care-api
+    runtime: php
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader
+      php artisan config:cache
+      php artisan route:cache
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        fromDatabase:
+          name: sunaulo-care-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: sunaulo-care-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: sunaulo-care-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: sunaulo-care-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: sunaulo-care-db
+          property: password
+      - key: SESSION_DRIVER
+        value: cookie
+      - key: CACHE_STORE
+        value: file
+      - key: FRONTEND_URL
+        sync: false
+
+databases:
+  - name: sunaulo-care-db
+    databaseName: sunaulo_care
+    user: sunaulo_user
